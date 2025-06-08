@@ -62,8 +62,8 @@ tests/
 ### 1️⃣ Clone & Install
 
 ```bash
-git clone <your-repo-url>
-cd email-service-backend
+git clone https://github.com/rohitramteke1/pearlthoughts-email-service-challenge
+cd pearlthoughts-email-service-challenge
 npm install
 ```
 
