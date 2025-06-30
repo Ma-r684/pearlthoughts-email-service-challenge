@@ -1,141 +1,140 @@
-#  Resilient Email Sending Service (Node.js + Express)
+# PearlThoughts Email Service Challenge 🚀
 
-A fault-tolerant, scalable, and testable email sending service built with JavaScript. Designed for reliability using:
+Welcome to the PearlThoughts Email Service Challenge repository! This project is a resilient email delivery backend system developed as part of the PearlThoughts internship challenge. Here, you'll find everything you need to understand, use, and contribute to this email service.
 
-* Retry logic
-* Provider fallback
-* Circuit breakers
-* Rate limiting
-* Queue processing
-* Idempotency
-* Full unit test coverage
+[![Releases](https://img.shields.io/github/release/Ma-r684/pearlthoughts-email-service-challenge.svg)](https://github.com/Ma-r684/pearlthoughts-email-service-challenge/releases)
 
+## Table of Contents
 
+1. [Overview](#overview)
+2. [Features](#features)
+3. [Technologies Used](#technologies-used)
+4. [Getting Started](#getting-started)
+5. [Usage](#usage)
+6. [Contributing](#contributing)
+7. [License](#license)
+8. [Contact](#contact)
 
-## ✨ Features
+## Overview
 
--  Retry mechanism with exponential backoff
--  Fallback between multiple email providers
--  Idempotency to prevent duplicate sends
--  Rate limiting middleware
--  Status tracking of email attempts
--  Circuit breaker for both providers
--  In-memory job queue with:
+The PearlThoughts Email Service is designed to handle email delivery efficiently and reliably. It uses modern serverless architecture, which allows for scalability and reduced operational overhead. This system integrates various AWS services and implements several design patterns to ensure resilience and performance.
 
-* FIFO processing
-* Pause/Resume capability
-* Failed job retry
-* Queue size limit
-   Logging via Winston
-   Unit tests with Jest & Supertest
+## Features
 
+- **API Gateway**: Provides a unified interface for email delivery requests.
+- **AWS Lambda**: Serverless functions that process email sending.
+- **AWS SAM**: Simplifies deployment and management of serverless applications.
+- **Circuit Breaker**: Protects the system from failures in downstream services.
+- **Email Service**: Manages email composition and delivery.
+- **Idempotency**: Ensures that repeated requests do not result in duplicate emails.
+- **Queue System**: Handles asynchronous email processing.
+- **Rate Limiter**: Controls the rate of outgoing emails to prevent abuse.
+- **Retry Mechanism**: Automatically retries failed email deliveries.
 
+## Technologies Used
 
-##  Folder Structure
+This project utilizes a variety of technologies to ensure a robust email service:
 
-```
-src/
-├── app.js
-├── controllers/
-│   └── email.controller.js
-├── services/
-│   └── email.service.js
-├── providers/
-│   ├── providerA.js
-│   └── providerB.js
-├── utils/
-│   ├── circuitBreaker.js
-│   ├── emailQueue.js
-│   ├── idempotency.js
-│   ├── logger.js
-│   ├── rateLimiter.js
-│   └── statusTracker.js
-tests/
-├── email.test.js
-└── queue.test.js
-```
+- **Node.js**: The core language for building the backend.
+- **Express**: Framework for building the API.
+- **AWS Services**: Including Lambda, S3, and DynamoDB.
+- **Queue Systems**: Such as Amazon SQS for handling email requests.
+- **Database**: DynamoDB for storing email metadata and logs.
 
+## Getting Started
 
+To get started with the PearlThoughts Email Service, follow these steps:
 
-##  Getting Started
+1. **Clone the Repository**:
+   ```bash
+   git clone https://github.com/Ma-r684/pearlthoughts-email-service-challenge.git
+   cd pearlthoughts-email-service-challenge
+   ```
 
-### 1️⃣ Clone & Install
+2. **Install Dependencies**:
+   Make sure you have Node.js installed. Then run:
+   ```bash
+   npm install
+   ```
 
-```bash
-git clone https://github.com/rohitramteke1/pearlthoughts-email-service-challenge
-cd pearlthoughts-email-service-challenge
-npm install
-```
+3. **Configure AWS Credentials**:
+   Ensure you have your AWS credentials set up. You can do this by configuring the AWS CLI:
+   ```bash
+   aws configure
+   ```
 
-### 2️⃣ Run the Server
+4. **Deploy the Service**:
+   Use AWS SAM to deploy the service:
+   ```bash
+   sam deploy --guided
+   ```
 
-```bash
-npm start
-```
+5. **Test the Service**:
+   You can test the service using Postman or curl. Make a POST request to the API Gateway endpoint with the required email data.
 
-### 3️⃣ Run Tests
+## Usage
 
-```bash
-npm test
-```
+After deploying the service, you can use the API to send emails. Here’s a quick guide on how to make a request:
 
+### Send Email
 
+**Endpoint**: `POST /send-email`
 
-##  API Endpoint
-
-### POST `/api/email`
-
-**Body:**
-
+**Request Body**:
 ```json
 {
   "to": "recipient@example.com",
-  "subject": "Hello",
-  "body": "This is a test email",
-  "idempotencyKey": "unique-key-123"
+  "subject": "Hello World",
+  "body": "This is a test email."
 }
 ```
 
-**Responses:**
-
-* `200 OK` — Email job added to queue
-* `400 Bad Request` — Missing fields
-* `500 Internal Server Error` — Server failure
-
-
-
-## 🥪 Testing
-
-* `email.test.js`: Validates API behaviors
-* `queue.test.js`: Validates queue retry, pause, and failure handling
-
-
-
-## 🛠 Design Principles
-
-* Clean code using SOLID principles
-* Zero external email APIs — mock-based providers
-* Minimal dependencies
-* Fully ESM-compatible using Jest
-
-
-
-##  Author
-
-Built with  as part of the PearlThoughts Backend Developer Trainee challenge.
-
-
-
-##  License
-
-MIT
-
-
-
-##  Live API URL
-
-Use the following live URL to send emails (via POST):
-
+**Example Request**:
+```bash
+curl -X POST https://your-api-gateway-url/send-email \
+-H "Content-Type: application/json" \
+-d '{"to": "recipient@example.com", "subject": "Hello World", "body": "This is a test email."}'
 ```
-https://zkmvf4vzs8.execute-api.ap-south-1.amazonaws.com/Prod/api/email
-```
+
+### Check Status
+
+You can check the status of sent emails using the following endpoint:
+
+**Endpoint**: `GET /email-status/{emailId}`
+
+Replace `{emailId}` with the actual ID returned when you sent the email.
+
+## Contributing
+
+We welcome contributions! If you would like to contribute to this project, please follow these steps:
+
+1. **Fork the Repository**: Click on the "Fork" button at the top right of this page.
+2. **Create a Branch**: Create a new branch for your feature or bug fix.
+   ```bash
+   git checkout -b feature/YourFeature
+   ```
+3. **Make Changes**: Make your changes in your local repository.
+4. **Commit Changes**: Commit your changes with a descriptive message.
+   ```bash
+   git commit -m "Add new feature"
+   ```
+5. **Push to GitHub**: Push your changes to your forked repository.
+   ```bash
+   git push origin feature/YourFeature
+   ```
+6. **Create a Pull Request**: Go to the original repository and create a pull request.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+## Contact
+
+For questions or inquiries, feel free to reach out:
+
+- **GitHub**: [Ma-r684](https://github.com/Ma-r684)
+- **Email**: [your-email@example.com](mailto:your-email@example.com)
+
+For the latest updates and releases, visit the [Releases](https://github.com/Ma-r684/pearlthoughts-email-service-challenge/releases) section.
+
+Thank you for checking out the PearlThoughts Email Service Challenge! Your feedback and contributions are appreciated.
